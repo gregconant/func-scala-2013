@@ -58,23 +58,26 @@ object Main {
    */
   def balance(chars: List[Char]): Boolean = {
     
-    def balanceForString(chars: List[Char], openParenCount: Int): Boolean = {
-      
-      println("is " + chars.mkString + " balanced? openParenCount: " + openParenCount)
-      if(chars.isEmpty) {
-        return (openParenCount == 0)
+    def balanceForString(chars: List[Char], openLeftParens: Int, level: Int = 0): Boolean = {
+      println(" " * level + "pass " + (level + 1) + ": '" + chars.mkString + "'") 
+      if(chars.isEmpty) 
+        (openLeftParens == 0)
+      else {
+	      if (chars.head == '(')
+	        return balanceForString(chars.tail, (openLeftParens + 1), level + 1)
+	      else if (chars.head == ')') {
+	        if(openLeftParens == 0)
+	          return false
+	        else
+	          return balanceForString(chars.tail, (openLeftParens - 1), level + 1)
+	      }
+	      else
+	        balanceForString(chars.tail, openLeftParens, level + 1)
       }
-      
-      if (chars.head == '(') {
-        println("  chars.head = '('. tail: " + chars.tail.mkString)
-        balanceForString(chars.tail, openParenCount + 1)
-      }
-      else if (chars.head == ')') {
-        //println("  chars.head = ')'. tail: " + chars.tail.mkString)
-        balanceForString(chars.tail, openParenCount - 1)
-      }
+
     }
-    balanceForString(chars, 0)
+    
+    return balanceForString(chars, 0, 0)
   }
 
   /**

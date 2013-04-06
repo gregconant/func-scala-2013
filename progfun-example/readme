@@ -1,0 +1,6 @@
+to submit an assignment:
+
+1. open terminal to the project directory
+2. sbt
+3. > submit <email address for class> <password on assignments page>
+
