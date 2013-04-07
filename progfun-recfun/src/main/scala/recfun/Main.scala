@@ -33,13 +33,13 @@ object Main {
    * For example, the function should return true for the following strings:
 
 		(if (zero? x) max (/ 1 x))
-		I told him (that it’s not (yet) done). (But he wasn’t listening)
+		I told him (that itï¿½s not (yet) done). (But he wasnï¿½t listening)
 	
 	The function should return false for the following strings:
 		:-)
 		())(
 		
-	The last example shows that it’s not enough to verify that a string contains the same number of opening and closing parentheses.
+	The last example shows that itï¿½s not enough to verify that a string contains the same number of opening and closing parentheses.
 		
 	Do this exercise by implementing the balance function in Main.scala. Its signature is as follows:
 		
@@ -59,7 +59,6 @@ object Main {
   def balance(chars: List[Char]): Boolean = {
     
     def balanceForString(chars: List[Char], openLeftParens: Int, level: Int = 0): Boolean = {
-      println(" " * level + "pass " + (level + 1) + ": '" + chars.mkString + "'") 
       if(chars.isEmpty) 
         (openLeftParens == 0)
       else {
@@ -96,7 +95,7 @@ object Main {
     else if(amount - coins.head == 0) 1
 	else makeChangeWith(amount - coins.head, coins) + makeChangeWith(amount, coins.tail)
    }
-   
+  /*
   def makeChangeWithDebugging(amount: Int, coins: List[Int], level: Int = 0): Int = {
 	val spacing = " " * (level + 1)  
     //println(spacing + "trying to find change for " + amount + " using " + coins.toString + "...")
@@ -119,4 +118,5 @@ object Main {
 	    changeWithCurrentList + changeWithRestOfList
 	  }
     }
+  */
 }
