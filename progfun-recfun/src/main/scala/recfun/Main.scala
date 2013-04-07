@@ -63,12 +63,12 @@ object Main {
         (openLeftParens == 0)
       else {
 	      if (chars.head == '(')
-	        return balanceForString(chars.tail, (openLeftParens + 1), level + 1)
+	        balanceForString(chars.tail, (openLeftParens + 1), level + 1)
 	      else if (chars.head == ')') {
 	        if(openLeftParens == 0)
-	          return false
+	          false
 	        else
-	          return balanceForString(chars.tail, (openLeftParens - 1), level + 1)
+	          balanceForString(chars.tail, (openLeftParens - 1), level + 1)
 	      }
 	      else
 	        balanceForString(chars.tail, openLeftParens, level + 1)
@@ -76,7 +76,7 @@ object Main {
 
     }
     
-    return balanceForString(chars, 0, 0)
+    balanceForString(chars, 0, 0)
   }
 
   /**

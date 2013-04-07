@@ -55,14 +55,12 @@ object Lists {
         xs.head
       }
       else {
-      val second = xs.tail.head
-      val first = xs.head
-      if(first > second) {
-        max(first :: xs.tail.slice(1,xs.tail.size-1))
-      }
-      else {
-        max(second :: xs.tail.slice(1,xs.tail.size-1))
-      }
+	      if(xs.head > xs.tail.head) {
+	        max(xs.head :: xs.tail.slice(1,xs.tail.size-1))
+	      }
+	      else {
+	        max(xs.tail.head :: xs.tail.slice(1,xs.tail.size-1))
+	      }
       }
     }      
   }
