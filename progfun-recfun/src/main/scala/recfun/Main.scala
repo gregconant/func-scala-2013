@@ -24,7 +24,7 @@ object Main {
   
   def pascal(column: Int, row: Int): Int = {
     if(column == 0 || column == row) 1
-    else pascal(column-1, row - 1)+ pascal(column, row-1)
+    else pascal(column-1, row - 1) + pascal(column, row-1)
   }
   /**
    * Exercise 2
@@ -83,5 +83,40 @@ object Main {
   /**
    * Exercise 3
    */
-  def countChange(money: Int, coins: List[Int]): Int = ???
+  def countChange(money: Int, coins: List[Int]): Int = {
+    
+      if(money <= 0) 0
+      else if (coins.isEmpty) 0
+      else {
+        makeChangeWith(money, coins.sorted, 0)
+	    }
+  }
+   def makeChangeWith(amount: Int, coins: List[Int], level: Int = 0): Int = {
+    if(coins.isEmpty || amount - coins.head < 0) 0
+    else if(amount - coins.head == 0) 1
+	else makeChangeWith(amount - coins.head, coins) + makeChangeWith(amount, coins.tail)
+   }
+   
+  def makeChangeWithDebugging(amount: Int, coins: List[Int], level: Int = 0): Int = {
+	val spacing = " " * (level + 1)  
+    //println(spacing + "trying to find change for " + amount + " using " + coins.toString + "...")
+    if(coins.isEmpty) 0
+    else if(amount - coins.head == 0) {
+		//println(spacing + "  found change for " + amount + " with " + coins.head)
+		1
+	}
+	
+	  else if(amount - coins.head < 0) {
+	    //println("  " * level + "  amount: " + amount + "   negative amount -- cannot make change for " + amount + " with " + coins.head)
+	    0
+	  }
+	  else {
+	    val changeWithCurrentList = (makeChangeWith(amount - coins.head, coins, level + 1))
+	    //println("  " * level + "  amount: " + amount + " with " + coins.toString + ": " + changeWithCurrentList)
+	    val changeWithRestOfList = makeChangeWith(amount, coins.tail, level + 1)
+	    //println("  " * level + "  amount: " + amount + " with sub-list " + coins.tail.toString + ": " + changeWithRestOfList)
+	    //println("  " * level + "  amount: " + amount + " all paths from here: " + (changeWithCurrentList + changeWithRestOfList))
+	    changeWithCurrentList + changeWithRestOfList
+	  }
+    }
 }
