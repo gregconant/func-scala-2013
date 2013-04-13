@@ -51,7 +51,7 @@ class FunSetSuite extends FunSuite {
   import FunSets._
 
   test("contains is implemented") {
-    assert(contains(x => true, 100))
+    assert(contains(x => true, 101))
   }
   
   /**
@@ -77,6 +77,12 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    
+    val intsBetweenZeroAndTen: Set = (x) => x <= 10 && x > 0
+    val evenInts: Set = (x) => x % 2 == 0
+    
+    val evenFilter: (Int => Boolean) = (x) => x % 2 == 0
+    val fromOneToOneHundred: Set = (x) => x <= 100 && x > 0
   }
 
   /**
@@ -86,7 +92,8 @@ class FunSetSuite extends FunSuite {
    * Once you finish your implementation of "singletonSet", exchange the
    * function "ignore" by "test".
    */
-  ignore("singletonSet(1) contains 1") {
+  //ignore("singletonSet(1) contains 1") {
+  test("singletonSet(1) contains 1") {
     
     /**
      * We create a new instance of the "TestSets" trait, this gives us access
@@ -97,16 +104,64 @@ class FunSetSuite extends FunSuite {
        * The string argument of "assert" is a message that is printed in case
        * the test fails. This helps identifying which assertion failed.
        */
-      assert(contains(s1, 1), "Singleton")
+      assert(contains(s1, 1), "Singleton s1 contains 1")
+      assert(contains(s2, 2), "Singleton s2 contains 2")
+      assert(contains(s3, 3), "Singleton s3 contains 3")
+      assert(!contains(s1, 3), "Singleton s1 does not contain 3")
+      assert(!contains(s2, 1), "Singleton s2 does not contain 1")
+      assert(!contains(s3, 2), "Singleton s3 does not contain 2")
+      assert(!contains(s1, 4), "Singleton s1 does not contain 4")
     }
   }
 
-  ignore("union contains all elements") {
+  test("union contains all elements") {
     new TestSets {
-      val s = union(s1, s2)
-      assert(contains(s, 1), "Union 1")
-      assert(contains(s, 2), "Union 2")
-      assert(!contains(s, 3), "Union 3")
+      val unioned = union(s1, s2)
+      assert(contains(unioned, 1), "Union 1")
+      assert(contains(unioned, 2), "Union 2")
+      assert(!contains(unioned, 3), "Union 3")
+    }
+  }
+
+  test("intersect contains elements in both") {
+    new TestSets {
+      val intersected = intersect(intsBetweenZeroAndTen, evenInts)
+      assert(contains(intersected, 2), "2 is in intersect")
+      assert(contains(intersected, 4), "4 is in intersect")
+      assert(contains(intersected, 6), "6 is in intersect")
+      assert(!contains(intersected, 1), "1 is not in intersect")
+      assert(!contains(intersected, 3), "3 is not in intersect")
+      assert(!contains(intersected, 11), "11 is not in intersect")
+    }
+  }
+
+  test("diff contains elements in a but not in b") {
+    new TestSets {
+      val diffed = diff(intsBetweenZeroAndTen, evenInts)
+      assert(!contains(diffed , 0), "0 is not in diff")
+      assert(!contains(diffed , 2), "2 is not in diff")
+      assert(contains(diffed , 3), "3 is in diff")
+      assert(contains(diffed , 9), "9 is in diff")
+      assert(!contains(diffed , 10), "10 is not in diff")
+      assert(!contains(diffed , 11), "11 is not in diff")
+    }
+  }
+
+  test("filter applies correctly to a set") {
+    new TestSets {
+      val filtered = filter(fromOneToOneHundred, evenFilter)
+      assert(contains(filtered, 2), "2 is in filter")
+      assert(contains(filtered, 20), "20 is in filter")
+      assert(contains(filtered, 50), "50 is in filter")
+      assert(contains(filtered, 80), "80 is in filter")
+      assert(contains(filtered, 100), "100 is in filter")
+
+      assert(!contains(filtered, 1), "1 is not in filter")
+      assert(!contains(filtered, 11), "11 is not in filter")
+      assert(!contains(filtered, 51), "51 is in filter")
+      assert(!contains(filtered, 101), "101 is not in filter")
+      assert(!contains(filtered, 0), "0 is not in filter")
+      assert(!contains(filtered, -1), "-1 is not in filter")
     }
   }
 }
