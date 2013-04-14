@@ -79,10 +79,18 @@ class FunSetSuite extends FunSuite {
     val s3 = singletonSet(3)
     
     val intsBetweenZeroAndTen: Set = (x) => x <= 10 && x > 0
-    val evenInts: Set = (x) => x % 2 == 0
+    val evens: Set = (x) => x % 2 == 0
+    val odds: Set = (x) => x % 2 == 1
     
     val evenFilter: (Int => Boolean) = (x) => x % 2 == 0
     val fromOneToOneHundred: Set = (x) => x <= 100 && x > 0
+    
+    val fromNegativeToPositiveOneThousand: Set = (x) => x >= -1000 && x <= 1000
+    val absoluteLessThanOneThousand: (Int => Boolean) = (x) => Math.abs(x) <= 1000
+
+    val tensFromZeroToOneHundred: Set = (x) => x % 10 == 0
+	val lessThanOneHundred: Set = (x) => x < 100
+	val evensLessThanTen: Set = (x) => x == 2 || x == 4 || x == 6 || x == 8
   }
 
   /**
@@ -125,7 +133,7 @@ class FunSetSuite extends FunSuite {
 
   test("intersect contains elements in both") {
     new TestSets {
-      val intersected = intersect(intsBetweenZeroAndTen, evenInts)
+      val intersected = intersect(intsBetweenZeroAndTen, evens)
       assert(contains(intersected, 2), "2 is in intersect")
       assert(contains(intersected, 4), "4 is in intersect")
       assert(contains(intersected, 6), "6 is in intersect")
@@ -137,7 +145,7 @@ class FunSetSuite extends FunSuite {
 
   test("diff contains elements in a but not in b") {
     new TestSets {
-      val diffed = diff(intsBetweenZeroAndTen, evenInts)
+      val diffed = diff(intsBetweenZeroAndTen, evens)
       assert(!contains(diffed , 0), "0 is not in diff")
       assert(!contains(diffed , 2), "2 is not in diff")
       assert(contains(diffed , 3), "3 is in diff")
@@ -155,13 +163,34 @@ class FunSetSuite extends FunSuite {
       assert(contains(filtered, 50), "50 is in filter")
       assert(contains(filtered, 80), "80 is in filter")
       assert(contains(filtered, 100), "100 is in filter")
-
       assert(!contains(filtered, 1), "1 is not in filter")
       assert(!contains(filtered, 11), "11 is not in filter")
       assert(!contains(filtered, 51), "51 is in filter")
       assert(!contains(filtered, 101), "101 is not in filter")
       assert(!contains(filtered, 0), "0 is not in filter")
       assert(!contains(filtered, -1), "-1 is not in filter")
+    }
+  }
+
+  test("forall tests correctly") {
+    new TestSets {
+      assert(!forall(intsBetweenZeroAndTen, evens), "all ints between zero and ten are not even")
+      assert(forall(evensLessThanTen, evens), "all evens between zero and ten are even")
+      assert(forall(tensFromZeroToOneHundred, evens), "every ten numbers between zero and ten is even")
+      assert(forall(intsBetweenZeroAndTen, lessThanOneHundred), "all ints between zero and ten are less than one hundred")
+    }
+  }
+
+  test("exists tests correctly") {
+    new TestSets {
+      val greaterThanOneHundred: Set = (x) => x > 100
+      val intIsThree: (Int => Boolean) = (x) => x == 3
+      val intIsThreeHundredAndFour: (Int => Boolean) = (x) => x == 304
+
+      assert(exists(evens, intIsThreeHundredAndFour), "there is an integer, 304, in the set of odd numbers.")
+      assert(exists(odds, intIsThree), "there is an integer, 3, in the set of odd numbers.")
+      assert(!exists(evensLessThanTen, greaterThanOneHundred), "there is not an integer in the set of even numbers < 10 that is greater than 100.")
+      assert(!exists(evens, odds), "there are no evens that are odd")
     }
   }
 }
