@@ -193,4 +193,21 @@ class FunSetSuite extends FunSuite {
       assert(!exists(evens, odds), "there are no evens that are odd")
     }
   }
+
+  test("map tests correctly") {
+    new TestSets {
+      val addOne: (Int => Int) = (x) => x + 1
+      val multipliedByTwo: (Int => Int) = (x) => x * 2
+//      println("zero and ten:")
+//      printSet(intsBetweenZeroAndTen)
+//      println("addOne: ") 
+      printSet(map(intsBetweenZeroAndTen, addOne))
+      printSet(map(intsBetweenZeroAndTen, multipliedByTwo))
+//      printSet(intsBetweenZeroAndTen)
+//      printSet(map(intsBetweenZeroAndTen, multipliedByTwo))
+      assert(contains(map(evens, addOne), 3), "3 is in the set of even numbers that have all had 1 added to them.")
+      assert(!contains(map(evens, addOne), 2), "2 is not in the set of even numbers that have all had 1 added to them.")
+      assert(contains(map(intsBetweenZeroAndTen, multipliedByTwo), 18), "18 is in the set of ints between 0 and 10 that have been multiplied by 2.")
+    }
+  }
 }
