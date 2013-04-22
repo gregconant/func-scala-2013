@@ -64,7 +64,7 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
-  test("mostRetweeted: with set 5") {
+  test("mostRetweeted: with set 6") {
     new TestSets {
       assert((set6.mostRetweeted).retweets === 90)
     }
@@ -76,6 +76,18 @@ class TweetSetSuite extends FunSuite {
       assert(!trends.isEmpty)
       assert(trends.head.user == "a" || trends.head.user == "b")
     }
+  }
+  
+  test("tweetsets - influence - apple or google") {
+    
+    new TestSets {
+    	val tweets = TweetReader.allTweets
+    	GoogleVsApple.googleTweets.foreach(f => println(f.text))
+    	GoogleVsApple.appleTweets.foreach(f => println(f.text))
+    	assert(!tweets.isEmpty)
+    
+    }
+    
   }
 
 }
