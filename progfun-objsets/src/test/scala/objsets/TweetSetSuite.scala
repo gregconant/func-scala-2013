@@ -12,7 +12,9 @@ class TweetSetSuite extends FunSuite {
     val set2 = set1.incl(new Tweet("a", "a body", 20))
     val set3 = set2.incl(new Tweet("b", "b body", 20))
     val c = new Tweet("c", "c body", 7)
+    val setC = set1.incl(c)
     val d = new Tweet("d", "d body", 9)
+    val setD = set1.incl(d)
     val set4c = set3.incl(c)
     val set4d = set3.incl(d)
     val set5 = set4c.incl(d)
@@ -46,6 +48,18 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+  test("union: set c and set d") {
+    new TestSets {
+      assert(size(setC.union(setD)) === 2)
+    }
+  }
+
+  test("union: c with nothing") {
+    new TestSets {
+      assert(size(setC.union(set1)) === 1)
+    }
+  }
+
   test("union: set4c and set4d") {
     new TestSets {
       assert(size(set4c.union(set4d)) === 4)
@@ -60,7 +74,8 @@ class TweetSetSuite extends FunSuite {
 
   test("union: with empty set (2)") {
     new TestSets {
-      assert(size(set1.union(set5)) === 4)
+      val unioned = set1.union(set5)
+      assert(size(unioned) === 4)
     }
   }
 
@@ -82,9 +97,19 @@ class TweetSetSuite extends FunSuite {
     
     new TestSets {
     	val tweets = TweetReader.allTweets
-    	GoogleVsApple.googleTweets.foreach(f => println(f.text))
-    	GoogleVsApple.appleTweets.foreach(f => println(f.text))
+    	//println("google tweets")
+    	//GoogleVsApple.googleTweets.foreach(f => println(f.text))
+    	//println("apple tweets")
+    	//GoogleVsApple.appleTweets.foreach(f => println(f.text))
+    	val appleAndGoogle = GoogleVsApple.googleTweets.union(GoogleVsApple.appleTweets)
+    	//println((GoogleVsApple.googleTweets).mostRetweeted.text)
     	assert(!tweets.isEmpty)
+    	assert(!appleAndGoogle.isEmpty)
+    	
+    	val trending = GoogleVsApple.trending
+    	assert(GoogleVsApple.trending.head.retweets == 321)
+    	//GoogleVsApple.trending.foreach(t => println(t))
+    	
     
     }
     
