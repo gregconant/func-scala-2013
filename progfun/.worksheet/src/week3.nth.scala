@@ -9,6 +9,7 @@ trait List[T] {
 //  class Nil[T] extends List[T]
 }
 
+	
 class Cons[T](val head: T, val tail: List[T]) extends List[T] {
   def isEmpty = false
   // don't need to implement Head and Tail because these
@@ -40,7 +41,7 @@ class Nil[T] extends List[T] {
 
 */
 
-object nth {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(1167); 
+object nth {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(1169); 
   def nth[T](n: Int, xs: List[T]): T =
     if (xs.isEmpty) throw new IndexOutOfBoundsException
     else if (n == 0) xs.head

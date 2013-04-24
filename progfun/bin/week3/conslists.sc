@@ -9,6 +9,7 @@ trait List[T] {
 //  class Nil[T] extends List[T]
 }
 
+	
 class Cons[T](val head: T, val tail: List[T]) extends List[T] {
   def isEmpty = false
   // don't need to implement Head and Tail because these
@@ -47,20 +48,20 @@ object nth {
     else nth(n-1, xs.tail)                        //> nth: [T](n: Int, xs: week3.List[T])T
     
   val list = new Cons(1, new Cons(2, new Cons(3, new Nil)))
-                                                  //> list  : week3.Cons[Int] = week3.Cons@70d97ea4
+                                                  //> list  : week3.Cons[Int] = week3.Cons@5385bb82
   
   nth(2, list)                                    //> res0: Int = 3
   
   nth(4, list)                                    //> java.lang.IndexOutOfBoundsException
-                                                  //| 	at week3.nth$$anonfun$main$1.nth$1(week3.nth.scala:45)
-                                                  //| 	at week3.nth$$anonfun$main$1.apply$mcV$sp(week3.nth.scala:53)
+                                                  //| 	at week3.nth$$anonfun$main$1.nth$1(week3.nth.scala:46)
+                                                  //| 	at week3.nth$$anonfun$main$1.apply$mcV$sp(week3.nth.scala:54)
                                                   //| 	at org.scalaide.worksheet.runtime.library.WorksheetSupport$$anonfun$$exe
                                                   //| cute$1.apply$mcV$sp(WorksheetSupport.scala:76)
                                                   //| 	at org.scalaide.worksheet.runtime.library.WorksheetSupport$.redirected(W
                                                   //| orksheetSupport.scala:65)
                                                   //| 	at org.scalaide.worksheet.runtime.library.WorksheetSupport$.$execute(Wor
                                                   //| ksheetSupport.scala:75)
-                                                  //| 	at week3.nth$.main(week3.nth.scala:43)
+                                                  //| 	at week3.nth$.main(week3.nth.scala:44)
                                                   //| 	at week3.nth.main(week3.nth.scala)
   nth(-1, list)
 }

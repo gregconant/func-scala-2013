@@ -5,6 +5,32 @@ package week4
 
 // Peano numbers
 
+trait List[+T] {
+  def isEmpty: Boolean = ???
+  def head: T = ???
+  def tail: List[T] = ???
+  def prepend [U >: T] (elem: U): List[U] = new Cons(elem, this)
+}
+
+class Cons[T](override val head: T, override val tail: List[T]) extends List[T] {
+  override def isEmpty = false
+}
+
+object Nil extends List[Nothing] {
+  def isEmpty: Boolean = true                     //> isEmpty: => Boolean
+  def head: Nothing = throw new NoSuchElementException("Nil.head")
+                                                  //> head: => Nothing
+  def tail: Nothing = throw new NoSuchElementException("Nil.tail")
+                                                  //> tail: => Nothing
+  
+}
+
+object test {
+  val x: List[String] = Nil
+  //def f(xs: List[NonEmpty], x: Empty) = xs prepend x
+  // this is a List[IntSet] as result type
+}
+
 abstract class Nat {
   def isZero: Boolean
   def predecessor: Nat

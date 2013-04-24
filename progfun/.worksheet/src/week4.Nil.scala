@@ -16,12 +16,10 @@ class Cons[T](override val head: T, override val tail: List[T]) extends List[T] 
   override def isEmpty = false
 }
 
-object Nil extends List[Nothing] {
-  def isEmpty: Boolean = true                     //> isEmpty: => Boolean
-  def head: Nothing = throw new NoSuchElementException("Nil.head")
-                                                  //> head: => Nothing
-  def tail: Nothing = throw new NoSuchElementException("Nil.tail")
-                                                  //> tail: => Nothing
+object Nil extends List[Nothing] {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(490); 
+  def isEmpty: Boolean = true;System.out.println("""isEmpty: => Boolean""");$skip(67); 
+  def head: Nothing = throw new NoSuchElementException("Nil.head");System.out.println("""head: => Nothing""");$skip(67); 
+  def tail: Nothing = throw new NoSuchElementException("Nil.tail");System.out.println("""tail: => Nothing""")}
   
 }
 
