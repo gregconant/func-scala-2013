@@ -78,7 +78,45 @@ object Huffman {
    *       println("integer is  : "+ theInt)
    *   }
    */
-  def times(chars: List[Char]): List[(Char, Int)] = ???
+  def times(chars: List[Char]): List[(Char, Int)] = {
+    timesAcc(chars, List[(Char, Int)]())
+  }
+  
+  def timesAcc(chars: List[Char], accum: List[(Char, Int)]): List[(Char,Int)] = {
+    if(chars.isEmpty) accum
+    else {
+      var found = accum.filter(p => p._1 == chars.head)
+      if(found.length > 0) {
+        // already exists in accumulator -- 
+        // create new list with this tuple's count increased
+        addCountToList(accum, chars.head)
+      } else {
+        val newItem: (Char, Int) = (chars.head, 1)
+        timesAcc(chars.tail, newItem :: accum)
+      }
+    }
+  }
+  
+  def addCountToList(accum: List[(Char, Int)], c: Char) : List[(Char, Int)] = {
+    if(accum.head._1 == c) {
+      val newCount = accum.head._2 + 1
+      (c, newCount) :: accum.tail
+    } else {
+      accum.head :: addCountToList(accum.tail, c)
+    }
+  }
+  
+/*  def copyList(char: Char, oldAccu: List[(Char, Int)], newAccu: List[(Char, Int)]): List[(Char, Int)] = {
+    if (oldAccu.isEmpty) newAccu
+    else if (oldAccu.head._1 == char) {
+      val newNum = oldAccu.head._2 + 1
+      (char, newNum) :: newAccu
+    } else {
+      oldAccu.head :: newAccu
+    }
+    copyList(char, oldAccu.tail, newAccu) 
+  }
+*/    
 
   /**
    * Returns a list of `Leaf` nodes for a given frequency table `freqs`.

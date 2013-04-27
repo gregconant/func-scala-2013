@@ -39,6 +39,42 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
+  test("times for list of one character") {
+    new TestTrees {
+      val timesList = times(List('a'))
+      assert(timesList === List(('a', 1)))
+    }
+  }
+
+  test("times for three-char list") {
+    new TestTrees {
+      val timesList = times(List('a', 'b', 'c'))
+      assert(timesList.length == 3)
+      assert(timesList.contains('a', 1))
+      assert(timesList.contains('b', 1))
+      assert(timesList.contains('c', 1))
+    }
+  }
+
+  test("times for two-char list with same character") {
+    new TestTrees {
+      val timesList = times(List('a', 'a'))
+      println(timesList)
+      assert(timesList.length == 1)
+      assert(timesList.contains('a', 2))
+    }
+  }
+  
+  test("times for three-char list with repeated characters") {
+    new TestTrees {
+      val timesList = times(List('a', 'b', 'a'))
+      println(timesList)
+      assert(timesList.length == 2)
+      assert(timesList.contains('a', 2))
+      assert(timesList.contains('b', 1))
+    }
+  }
+  
   test("string2chars(\"hello, world\")") {
     assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
   }
