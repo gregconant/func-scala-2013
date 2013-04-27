@@ -106,18 +106,6 @@ object Huffman {
     }
   }
   
-/*  def copyList(char: Char, oldAccu: List[(Char, Int)], newAccu: List[(Char, Int)]): List[(Char, Int)] = {
-    if (oldAccu.isEmpty) newAccu
-    else if (oldAccu.head._1 == char) {
-      val newNum = oldAccu.head._2 + 1
-      (char, newNum) :: newAccu
-    } else {
-      oldAccu.head :: newAccu
-    }
-    copyList(char, oldAccu.tail, newAccu) 
-  }
-*/    
-
   /**
    * Returns a list of `Leaf` nodes for a given frequency table `freqs`.
    *
@@ -125,7 +113,9 @@ object Huffman {
    * head of the list should have the smallest weight), where the weight
    * of a leaf is the frequency of the character.
    */
-  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = ???
+  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
+    freqs.sortBy(f => f._2).map(x => Leaf(x._1, x._2))
+  }
 
   /**
    * Checks whether the list `trees` contains only one single code tree.
