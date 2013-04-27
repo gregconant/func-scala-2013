@@ -12,6 +12,19 @@ class HuffmanSuite extends FunSuite {
   trait TestTrees {
     val t1 = Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5)
     val t2 = Fork(Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5), Leaf('d',4), List('a','b','d'), 9)
+    val oneNodeTree = Leaf('a',1)
+  }
+
+  test("weight of one-node tree") {
+    new TestTrees {
+      assert(weight(oneNodeTree) === 1)
+    }
+  }
+
+  test("chars of one-node tree") {
+    new TestTrees {
+      assert(chars(oneNodeTree) === List('a'))
+    }
   }
 
   test("weight of a larger tree") {
