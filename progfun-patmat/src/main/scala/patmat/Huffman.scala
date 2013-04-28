@@ -137,7 +137,7 @@ object Huffman {
   def combine(trees: List[CodeTree]): List[CodeTree] = {
 	trees match {
 	  case Nil => Nil
-	  case List(_,_) => trees
+	  case List(_) => trees
 	  case _ :: _ :: restOfTree => {
 	    combineFirstTwoNodes(trees) ::: restOfTree
 	  }
@@ -146,10 +146,25 @@ object Huffman {
   
   def combineFirstTwoNodes(trees: List[CodeTree]): List[CodeTree] = {
     trees match {
+      case List(Leaf(c1, w1), Leaf(c2, w2)) => {
+        val item1 = Leaf(c1, w1)
+        val item2 = Leaf(c2, w2)
+        List(Fork(item1, item2, List(item1.char, item2.char), item1.weight + item2.weight))
+      }
       case List(Leaf(c1, w1), Leaf(c2, w2), _) => {
         val item1 = Leaf(c1, w1)
         val item2 = Leaf(c2, w2)
         List(Fork(item1, item2, List(item1.char, item2.char), item1.weight + item2.weight))
+      }
+      case List(Leaf(c1, w1), Fork(left, right, chars, weight)) => {
+        val item1 = Leaf(c1, w1)
+        val item2 = Fork(left, right, chars, weight)
+        List(Fork(item1, item2, item1.char :: item2.chars, item1.weight + item2.weight))
+      }
+      case List(Fork(left, right, chars, weight), Leaf(c1, w1)) => {
+        val item1 = Fork(left, right, chars, weight) 
+        val item2 = Leaf(c1, w1)
+        List(Fork(item1, item2, item1.chars :+ item2.char, item1.weight + item2.weight))
       }
     }
     
@@ -172,7 +187,16 @@ object Huffman {
    *    the example invocation. Also define the return type of the `until` function.
    *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
    */
-  def until(xxx: ???, yyy: ???)(zzz: ???): ??? = ???
+  def until(
+      condition: (List[CodeTree] => Boolean),
+      action: (List[CodeTree] => List[CodeTree]))(inputList: List[CodeTree]): CodeTree = {
+    if(condition(inputList)) inputList(0)
+    else {
+      val nextList = action(inputList)
+      val func = until(condition, action)(nextList)
+      func
+    }
+  }
 
   /**
    * This function creates a code tree which is optimal to encode the text `chars`.

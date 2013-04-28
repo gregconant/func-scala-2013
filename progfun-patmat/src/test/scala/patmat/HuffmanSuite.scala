@@ -90,16 +90,35 @@ class HuffmanSuite extends FunSuite {
 	}
   }
 
-  test("combine of leaf list with only 2 nodes -- no change.") {
+  test("combine of leaf list with 2 nodes") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2))
-    assert(combine(leaflist) === List(Leaf('e',1),Leaf('t',2)))
+    assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2), List('e', 't'), 3)))
   }
+
   
   test("combine of some leaf list") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     val combined = combine(leaflist)
     assert(combined === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
   }
+  
+  test("combine of nested leaf list") {
+    val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
+    val combined = combine(leaflist)
+    val combinedAgain = combine(combined)
+    
+    val newLeft = Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3)
+    val newRight = Leaf('x', 4)
+    assert(combinedAgain === List(Fork(newLeft, newRight, List('e', 't', 'x'), 7 )))
+  }
+/*
+  test("test the until function") {
+    val leafList = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
+    val combinedListFunc = until(singleton, combine)_
+    val result = combinedListFunc(leafList)
+    assert("hi" == "hi")
+  }
+*/
 
   test("decode and encode a very short text should be identity") {
     new TestTrees {
