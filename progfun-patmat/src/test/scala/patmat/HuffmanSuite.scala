@@ -152,7 +152,7 @@ class HuffmanSuite extends FunSuite {
     var chars = List('a','b','c','d','b','b','a','a','a','a','a')
     val result = createCodeTree(chars)
     // orderedTuples: List(Leaf(d,1), Leaf(c,1), Leaf(b,3), Leaf(a,6))
-    println(result)
+    //println(result)
     assert(result === 
         Fork(
             Fork(
@@ -163,6 +163,33 @@ class HuffmanSuite extends FunSuite {
         ))
   }
 
+  test("decode - two chars") {
+    var chars = List('c', 'd')
+    val codeTree = createCodeTree(chars)
+    //println(codeTree)
+    val result = decode(codeTree, List(1,1))
+    //println(result)
+    assert(result == List('c', 'c'))
+  }
+
+  test("decode - four chars - all rightmost leaf node") {
+    var chars = List('e', 'f', 'g', 'h')
+    val codeTree = createCodeTree(chars)
+    println("4 chars: " + codeTree)
+//    val result = decode(codeTree, List(0,0,0,1,1,0,1,1))
+    val result = decode(codeTree, List(1,1,1,1,1,1,1,1))
+    println(result)
+    assert(result == List('e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'))
+  }
+
+  test("decode - four chars") {
+    var chars = List('e', 'f', 'g', 'h')
+    val codeTree = createCodeTree(chars)
+    println("4 chars: " + codeTree)
+    val result = decode(codeTree, List(0,0,0,0,0,1,1,1))
+    println(result)
+    assert(result == List('h', 'g', 'e', 'e'))
+  }
 
   test("decode and encode a very short text should be identity") {
     new TestTrees {

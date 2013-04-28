@@ -212,8 +212,36 @@ object Huffman {
    * This function decodes the bit sequence `bits` using the code tree `tree` and returns
    * the resulting list of characters.
    */
-  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = ???
+  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
+    decodeAcc(tree, bits, List[Char]()).reverse
+  } 
 
+  def decodeAcc(tree: CodeTree, bits: List[Bit], acc: List[Char]) : List[Char] = {
+    if(bits.isEmpty) acc
+    else {
+      // traverse the tree, finding the first leaf we can using the bit array
+      val newAccAndBits = findNextLeaf(tree, bits, acc)
+      decodeAcc(tree, newAccAndBits._1, newAccAndBits._2)
+    }
+  }
+  
+  def findNextLeaf(tree: CodeTree, bits: List[Bit], acc: List[Char]) : (List[Bit], List[Char]) = {
+    tree match {
+      case leaf: Leaf => {
+        // found the leaf
+        (bits, leaf.char :: acc)
+      } 
+      case fork: Fork => {
+        // go left or right?
+        if(bits.head == 0) {
+	        findNextLeaf(fork.left, bits.tail, acc)
+        } else {
+          findNextLeaf(fork.right, bits.tail, acc)
+        }
+      }
+    }
+  }
+  
   /**
    * A Huffman coding tree for the French language.
    * Generated from the data given at
