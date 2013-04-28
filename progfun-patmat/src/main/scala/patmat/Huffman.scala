@@ -343,7 +343,9 @@ object Huffman {
   def convertAcc(tree: CodeTree, bits: List[Bit]): CodeTable = tree match {
     case Leaf(char,_) => List((char,bits))
     case Fork(left,right,_,_) => {
-      mergeCodeTables(convertAcc(left, bits ::: List(0)), convertAcc(right, bits ::: List(1)))
+      val convertedLeft = convertAcc(left, bits ::: List(0))
+      val convertedRight = convertAcc(right, bits ::: List(1))
+      mergeCodeTables(convertedLeft, convertedRight)
     }
   }
 
