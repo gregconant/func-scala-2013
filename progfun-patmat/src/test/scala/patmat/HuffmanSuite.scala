@@ -191,9 +191,39 @@ class HuffmanSuite extends FunSuite {
     assert(result == List('h', 'g', 'e', 'e'))
   }
 
+  test("decoded secret!") {
+    val result = decodedSecret
+    println("secret: " + result)
+    println("that is awesome.")
+  }
+  
+  test("some encoding on a simple one-fork tree") {
+    new TestTrees {
+      val encodedT1 = encode(t1)("ab".toList)
+      //println("encoded: " + encodedT1)
+      assert(List(0,1) == encodedT1)
+    }
+  }
+
   test("decode and encode a very short text should be identity") {
     new TestTrees {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
     }
   }
+  
+  
+  test("test convert function") {
+    val tree = Fork(Leaf('a',2),Leaf('b',3),List('a', 'b'),5)
+    val converted = convert(tree)
+    println(converted)
+  }
+  
+  test("convert using quickEncode") {
+    new TestTrees {
+      val encoded = quickEncode(t1)("ba".toList)
+      println("quick encode: " + encoded)
+    }
+  }
+ 
+  
 }
