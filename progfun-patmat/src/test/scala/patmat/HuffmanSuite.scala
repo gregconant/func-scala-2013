@@ -59,7 +59,6 @@ class HuffmanSuite extends FunSuite {
   test("times for two-char list with same character") {
     new TestTrees {
       val timesList = times(List('a', 'a'))
-      println(timesList)
       assert(timesList.length == 1)
       assert(timesList.contains('a', 2))
     }
@@ -68,7 +67,6 @@ class HuffmanSuite extends FunSuite {
   test("times for three-char list with repeated characters") {
     new TestTrees {
       val timesList = times(List('a', 'b', 'a'))
-      println(timesList)
       assert(timesList.length == 2)
       assert(timesList.contains('a', 2))
       assert(timesList.contains('b', 1))
@@ -83,9 +81,24 @@ class HuffmanSuite extends FunSuite {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
   }
 
+  test("singleton for lists of trees") {
+    new TestTrees {
+      val treeWithTwoLeaves = Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5)
+      val nodeTreeList = List(treeWithTwoLeaves, oneNodeTree)
+	    assert(singleton(List(oneNodeTree)) == true)
+	    assert(singleton(nodeTreeList) == false)
+	}
+  }
+
+  test("combine of leaf list with only 2 nodes -- no change.") {
+    val leaflist = List(Leaf('e', 1), Leaf('t', 2))
+    assert(combine(leaflist) === List(Leaf('e',1),Leaf('t',2)))
+  }
+  
   test("combine of some leaf list") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
-    assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
+    val combined = combine(leaflist)
+    assert(combined === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
   }
 
   test("decode and encode a very short text should be identity") {

@@ -87,10 +87,10 @@ object Huffman {
     else {
       var found = accum.filter(p => p._1 == chars.head)
       if(found.length > 0) {
-        // already exists in accumulator -- 
-        // create new list with this tuple's count increased
+        // already exists in accumulator
         addCountToList(accum, chars.head)
       } else {
+        // add new tuple to accumulator
         val newItem: (Char, Int) = (chars.head, 1)
         timesAcc(chars.tail, newItem :: accum)
       }
@@ -120,7 +120,7 @@ object Huffman {
   /**
    * Checks whether the list `trees` contains only one single code tree.
    */
-  def singleton(trees: List[CodeTree]): Boolean = ???
+  def singleton(trees: List[CodeTree]): Boolean = trees.length == 1
 
   /**
    * The parameter `trees` of this function is a list of code trees ordered
@@ -134,7 +134,26 @@ object Huffman {
    * If `trees` is a list of less than two elements, that list should be returned
    * unchanged.
    */
-  def combine(trees: List[CodeTree]): List[CodeTree] = ???
+  def combine(trees: List[CodeTree]): List[CodeTree] = {
+	trees match {
+	  case Nil => Nil
+	  case List(_,_) => trees
+	  case _ :: _ :: restOfTree => {
+	    combineFirstTwoNodes(trees) ::: restOfTree
+	  }
+	}
+  }
+  
+  def combineFirstTwoNodes(trees: List[CodeTree]): List[CodeTree] = {
+    trees match {
+      case List(Leaf(c1, w1), Leaf(c2, w2), _) => {
+        val item1 = Leaf(c1, w1)
+        val item2 = Leaf(c2, w2)
+        List(Fork(item1, item2, List(item1.char, item2.char), item1.weight + item2.weight))
+      }
+    }
+    
+  }
 
   /**
    * This function will be called in the following way:
