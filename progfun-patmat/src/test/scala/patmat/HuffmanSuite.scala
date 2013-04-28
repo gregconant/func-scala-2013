@@ -73,6 +73,19 @@ class HuffmanSuite extends FunSuite {
     }
   }
   
+  test("times for list with multiple chars, some of which have repeats") {
+    new TestTrees {
+	    var chars = List('a','b','c','d','b','b','a','a','a','a','a')
+	    val result = times(chars)
+	    assert(result.length == 4)
+	    assert(result.contains('a', 6))
+	    assert(result.contains('b', 3))
+	    assert(result.contains('c', 1))
+	    assert(result.contains('d', 1))
+    }
+    
+  }
+  
   test("string2chars(\"hello, world\")") {
     assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
   }
@@ -116,10 +129,38 @@ class HuffmanSuite extends FunSuite {
     val leafList = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     val combinedListFunc = until(singleton, combine)_
     val result = combinedListFunc(leafList)
-    println(result)
     assert(result === List(
         Fork(Fork(Leaf('e',1),Leaf('t',2), List('e','t'),3),
         Leaf('x', 4), List('e','t','x'), 7)))
+  }
+
+  test("test the until function with 4 nodes") {
+    val leafList = List(Leaf('d',1), Leaf('c',1), Leaf('b',3), Leaf('a',6))
+    val combinedListFunc = until(singleton, combine)_
+    val result = combinedListFunc(leafList)
+    assert(result === List(
+        Fork(
+            Fork(
+                Fork(Leaf('d',1), Leaf('c', 1), List('d','c'), 2),
+                Leaf('b', 3), List('d','c','b'), 5
+            ),
+            Leaf('a', 6), List('d','c','b','a'), 11
+        )))
+  }
+
+  test("test the createCodeTree function") {
+    var chars = List('a','b','c','d','b','b','a','a','a','a','a')
+    val result = createCodeTree(chars)
+    // orderedTuples: List(Leaf(d,1), Leaf(c,1), Leaf(b,3), Leaf(a,6))
+    println(result)
+    assert(result === 
+        Fork(
+            Fork(
+                Fork(Leaf('d',1), Leaf('c', 1), List('d','c'), 2),
+                Leaf('b', 3), List('d','c','b'), 5
+            ),
+            Leaf('a', 6), List('d','c','b','a'), 11
+        ))
   }
 
 

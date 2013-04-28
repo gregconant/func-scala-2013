@@ -88,7 +88,7 @@ object Huffman {
       var found = accum.filter(p => p._1 == chars.head)
       if(found.length > 0) {
         // already exists in accumulator
-        addCountToList(accum, chars.head)
+        timesAcc(chars.tail, addCountToList(accum, chars.head))
       } else {
         // add new tuple to accumulator
         val newItem: (Char, Int) = (chars.head, 1)
@@ -139,32 +139,21 @@ object Huffman {
 	  case Nil => Nil
 	  case List(_) => trees
 	  case _ :: _ :: restOfTree => {
-	    combineFirstTwoNodes(trees) ::: restOfTree
+	    val combined = combineFirstTwoNodes(trees)
+	    combined ::: restOfTree
 	  }
 	}
   }
   
   def combineFirstTwoNodes(trees: List[CodeTree]): List[CodeTree] = {
     trees match {
-      case List(Leaf(c1, w1), Leaf(c2, w2)) => {
-        val item1 = Leaf(c1, w1)
-        val item2 = Leaf(c2, w2)
-        List(Fork(item1, item2, List(item1.char, item2.char), item1.weight + item2.weight))
+      case List() => trees
+      case List(_) => trees
+      case List(first, second, _*) => {
+        List(makeCodeTree(first, second))
       }
-      case List(Leaf(c1, w1), Leaf(c2, w2), _) => {
-        val item1 = Leaf(c1, w1)
-        val item2 = Leaf(c2, w2)
-        List(Fork(item1, item2, List(item1.char, item2.char), item1.weight + item2.weight))
-      }
-      case List(Leaf(c1, w1), Fork(left, right, chars, weight)) => {
-        val item1 = Leaf(c1, w1)
-        val item2 = Fork(left, right, chars, weight)
-        List(Fork(item1, item2, item1.char :: item2.chars, item1.weight + item2.weight))
-      }
-      case List(Fork(left, right, chars, weight), Leaf(c1, w1)) => {
-        val item1 = Fork(left, right, chars, weight) 
-        val item2 = Leaf(c1, w1)
-        List(Fork(item1, item2, item1.chars :+ item2.char, item1.weight + item2.weight))
+      case List(first,second) => {
+        List(makeCodeTree(first, second))
       }
     }
     
@@ -190,11 +179,9 @@ object Huffman {
   def until(
       condition: (List[CodeTree] => Boolean),
       action: (List[CodeTree] => List[CodeTree]))(inputList: List[CodeTree]): List[CodeTree] = {
-    if(inputList.isEmpty) inputList
-   else if(condition(inputList)) inputList
-    else {
-      until(condition, action)(action(inputList))
-    }
+   if (inputList.isEmpty) inputList
+   else if (condition(inputList)) inputList
+   else until(condition, action)(action(inputList))
   }
 
   /**
@@ -203,9 +190,19 @@ object Huffman {
    * The parameter `chars` is an arbitrary text. This function extracts the character
    * frequencies from that text and creates a code tree based on them.
    */
-  def createCodeTree(chars: List[Char]): CodeTree = ???
-
-
+  def createCodeTree(chars: List[Char]): CodeTree = {
+    
+	val charNodeList = times(chars)
+	// now we have a list of tuples for characters
+	// now order them
+	val orderedCharTuples = makeOrderedLeafList(charNodeList)
+	
+	val combineOp = until(singleton, combine)_
+	val result = combineOp(orderedCharTuples)
+	
+	result(0)
+	
+  }
 
   // Part 3: Decoding
 
