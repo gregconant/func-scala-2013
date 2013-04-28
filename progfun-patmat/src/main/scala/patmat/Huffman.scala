@@ -353,8 +353,7 @@ object Huffman {
    * on the two parameter code tables.
    */
   def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = {
-    val merged = a ::: b
-    merged
+    a ::: b
   }
 
   /**
@@ -365,13 +364,29 @@ object Huffman {
    */
   def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = {
     val codeTable = convert(tree)
-    quickEncodeAcc(codeTable, text, List())
+    quickEncodeAccMatching(codeTable, text, List())
   }
   
-  def quickEncodeAcc(table: CodeTable, text: List[Char], code: List[Bit]): List[Bit] = text match {
-    case Nil => Nil
+  
+  def quickEncodeAccMatching(table: CodeTable, text: List[Char], code: List[Bit]): List[Bit] = text match {
+    case Nil => code 
     case char :: chars => {
-      quickEncodeAcc(table, chars, code ::: codeBits(table)(char))
+      val codeForChar = codeBits(table)(char)
+      quickEncodeAcc(table, chars, code ::: codeForChar)
     }
+  }
+ 
+  // alternate quick encode -- without matching
+  def quickEncodeAcc(table: CodeTable, text: List[Char], code: List[Bit]): List[Bit] = {
+    if(text.isEmpty) code 
+    else if(text.length == 1) {
+      val codeForChar = codeBits(table)(text.head)
+      quickEncodeAcc(table, List(), code ::: codeForChar)
+    } else {
+      val codeForChar = codeBits(table)(text.head)
+      quickEncodeAcc(table, text.tail, code ::: codeForChar)
+      
+    }
+  
   }
 }

@@ -222,8 +222,14 @@ class HuffmanSuite extends FunSuite {
     new TestTrees {
       val encoded = quickEncode(t1)("ba".toList)
       println("quick encode: " + encoded)
+      assert(List(1,0) == encoded)
     }
   }
  
+  test("decode and quick encode a very short text should be identity") {
+    new TestTrees {
+      assert(decode(t1, quickEncode(t1)("ab".toList)) === "ab".toList)
+    }
+  }
   
 }
