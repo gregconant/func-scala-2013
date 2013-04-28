@@ -111,14 +111,17 @@ class HuffmanSuite extends FunSuite {
     val newRight = Leaf('x', 4)
     assert(combinedAgain === List(Fork(newLeft, newRight, List('e', 't', 'x'), 7 )))
   }
-/*
+
   test("test the until function") {
     val leafList = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     val combinedListFunc = until(singleton, combine)_
     val result = combinedListFunc(leafList)
-    assert("hi" == "hi")
+    println(result)
+    assert(result === List(
+        Fork(Fork(Leaf('e',1),Leaf('t',2), List('e','t'),3),
+        Leaf('x', 4), List('e','t','x'), 7)))
   }
-*/
+
 
   test("decode and encode a very short text should be identity") {
     new TestTrees {

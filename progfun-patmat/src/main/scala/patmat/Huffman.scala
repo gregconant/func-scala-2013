@@ -189,12 +189,11 @@ object Huffman {
    */
   def until(
       condition: (List[CodeTree] => Boolean),
-      action: (List[CodeTree] => List[CodeTree]))(inputList: List[CodeTree]): CodeTree = {
-    if(condition(inputList)) inputList(0)
+      action: (List[CodeTree] => List[CodeTree]))(inputList: List[CodeTree]): List[CodeTree] = {
+    if(inputList.isEmpty) inputList
+   else if(condition(inputList)) inputList
     else {
-      val nextList = action(inputList)
-      val func = until(condition, action)(nextList)
-      func
+      until(condition, action)(action(inputList))
     }
   }
 
