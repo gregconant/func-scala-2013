@@ -21,7 +21,7 @@ object Anagrams {
    *  Note: If the frequency of some character is zero, then that character should not be
    *  in the list.
    */
-  type Occurrences = List[(Char, Int)]
+  type Occurrences = List[(Char, Int)]  
 
   /** The dictionary is simply a sequence of words.
    *  It is predefined and obtained as a sequence using the utility method `loadDictionary`.
@@ -33,8 +33,14 @@ object Anagrams {
    *  Note: the uppercase and lowercase version of the character are treated as the
    *  same character, and are represented as a lowercase character in the occurrence list.
    */
-  def wordOccurrences(w: Word): Occurrences = ???
-
+  
+  // use 'groupBy' function
+  def wordOccurrences(w: Word): Occurrences = 
+  	w.groupBy(c => c.toLower)
+     .map(m => (m._1, m._2.length))
+     .toList
+     .sorted
+  
   /** Converts a sentence into its character occurrence list. */
   def sentenceOccurrences(s: Sentence): Occurrences = ???
 

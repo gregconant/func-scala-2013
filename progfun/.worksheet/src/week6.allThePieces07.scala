@@ -92,11 +92,25 @@ Design a program that converts telephone #s to sentences.
   def translate(number: String): Set[String] =
     encode(number). map(_ mkString " ");System.out.println("""translate: (number: String)Set[String]""");$skip(31); val res$4 = 
     
-  translate("7225247386");System.out.println("""res4: Set[String] = """ + $show(res$4))}
+  translate("7225247386")
 /*
 --
 ------------------------
+
 */
+type Word = String
+
+  /** A sentence is a `List` of words. */
+  type Sentence = List[Word]
+  type Occurrences = List[(Char, Int)];System.out.println("""res4: Set[String] = """ + $show(res$4));$skip(285); 
+
+  def wordOccurrences(w: Word): Occurrences =
+    w.groupBy(c => c.toLower)
+     .map(m => (m._1, m._2.length)).toList;System.out.println("""wordOccurrences: (w: week6.allThePieces07.Word)week6.allThePieces07.Occurrences""")}
+//    w.groupBy(char => w.count(char))
+  
+    
+  
 /*
 --------------------------
 */

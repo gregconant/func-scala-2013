@@ -104,7 +104,22 @@ Design a program that converts telephone #s to sentences.
 /*
 --
 ------------------------
+
 */
+type Word = String
+
+  /** A sentence is a `List` of words. */
+  type Sentence = List[Word]
+  type Occurrences = List[(Char, Int)]
+
+  def wordOccurrences(w: Word): Occurrences =
+    w.groupBy(c => c.toLower)
+     .map(m => (m._1, m._2.length)).toList        //> wordOccurrences: (w: week6.allThePieces07.Word)week6.allThePieces07.Occurre
+                                                  //| nces
+//    w.groupBy(char => w.count(char))
+  
+    
+  
 /*
 --------------------------
 */
