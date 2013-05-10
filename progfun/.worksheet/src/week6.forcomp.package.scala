@@ -1,11 +1,36 @@
+package week6
+
 import java.io.File
 import scala.io.Source
+import common._
 
-package week6 {
-	object allThePieces07 {
-	  println("Welcome to the Scala worksheet")
-                                                  //> Welcome to the Scala worksheet
+package object forcomp {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(156); 
+  val dictionaryPath = List("forcomp", "linuxwords.txt");System.out.println("""dictionaryPath  : List[String] = """ + $show(dictionaryPath ));$skip(543); 
 
+  def loadDictionary = {
+    val wordstream = Option {
+      getClass.getClassLoader.getResourceAsStream(dictionaryPath.mkString("/"))
+    } orElse {
+      common.resourceAsStreamFromSrc(dictionaryPath)
+    } getOrElse {
+      sys.error("Could not load word list, dictionary file not found")
+    }
+    try {
+      val s = io.Source.fromInputStream(wordstream)
+      s.getLines.toList
+    } catch {
+      case e: Exception =>
+        println("Could not load word list: " + e)
+        throw e
+    } finally {
+      wordstream.close()
+    }
+  };System.out.println("""loadDictionary: => List[String]""")}
+
+}
+
+object allThePieces07 {
+  println("Welcome to the Scala worksheet")
 /*
 --------------------------
 Design a program that converts telephone #s to sentences.
@@ -13,8 +38,6 @@ Design a program that converts telephone #s to sentences.
   val mnem = Map(
     '2' -> "ABC", '3' -> "DEF", '4' -> "GHI", '5' -> "JKL",
     '6' -> "MNO", '7' -> "PRQS", '8' -> "TUV", '9' -> "WXYZ")
-                                                  //> mnem  : scala.collection.immutable.Map[Char,String] = Map(8 -> TUV, 4 -> GHI
-                                                  //| , 9 -> WXYZ, 5 -> JKL, 6 -> MNO, 2 -> ABC, 7 -> PRQS, 3 -> DEF)
 
 /*
   Assume you are given a dictionary 'words' as a list of words.
@@ -39,18 +62,12 @@ Design a program that converts telephone #s to sentences.
 --------------------------
 */
   val in = Source.fromURL("http://lamp.epfl.ch/files/content/sites/lamp/files/teaching/progfun/linuxwords.txt")
-                                                  //> in  : scala.io.BufferedSource = non-empty iterator
   
   val words = in.getLines.toList filter(w => w forall(chr => chr.isLetter))
-                                                  //> words  : List[String] = List()
 
   /** Invert the mnem map to give a map from chars 'A' ... 'Z' to '2' ... '9' */
   val charCode: Map[Char, Char] =
     for ((digit, str) <- mnem; ltr <- str) yield ltr -> digit
-                                                  //> charCode  : Map[Char,Char] = Map(E -> 3, X -> 9, N -> 6, T -> 8, Y -> 9, J 
-                                                  //| -> 5, U -> 8, F -> 3, A -> 2, M -> 6, I -> 4, G -> 4, V -> 8, Q -> 7, L -> 
-                                                  //| 5, B -> 2, P -> 7, C -> 2, H -> 4, W -> 9, K -> 5, R -> 7, O -> 6, D -> 3, 
-                                                  //| Z -> 9, S -> 7)
     // 1st generator goes through all mappings
     // of char to str
     // 2nd generator goes through all letters
@@ -60,11 +77,11 @@ Design a program that converts telephone #s to sentences.
   /** Maps a word to the digit string it can represent, e.g. "Java" -> "5282" */
   def wordCode(word: String): String =
     //word map charCode
-    word.toUpperCase map charCode                 //> wordCode: (word: String)String
+    word.toUpperCase map charCode
     // this works because Maps are functions
-  wordCode("JAVA")                                //> res0: String = 5282
+  wordCode("JAVA")
   // at fionly works so far on uppercase characters
-  wordCode("Java")                                //> res1: String = 5282
+  wordCode("Java")
   
   /**
   * A Map from digit strings to the words that represent them,
@@ -74,10 +91,10 @@ Design a program that converts telephone #s to sentences.
   */
   // want to group lists of words that have the same code
   val wordsForNum: Map[String, Seq[String]] =
-    words groupBy wordCode withDefaultValue Seq() //> wordsForNum  : Map[String,Seq[String]] = Map()
+    words groupBy wordCode withDefaultValue Seq()
     // some words have hyphens.
     // drop all that do not have hyphens.
-  wordsForNum("JAVA")                             //> res2: Seq[String] = List()
+  wordsForNum("JAVA")
   
   /** Return all ways to encode a number as a list of words */
   def encode(number: String): Set[List[String]] ={
@@ -93,16 +110,16 @@ Design a program that converts telephone #s to sentences.
         rest <- encode(number drop split)
       } yield word :: rest
     } toSet
-  }                                               //> encode: (number: String)Set[List[String]]
+  }
       // first word followed by the rest
   
-  encode("7225247386")                            //> res3: Set[List[String]] = Set()
+  encode("7225247386")
   
   // present as complete phrases
   def translate(number: String): Set[String] =
-    encode(number). map(_ mkString " ")           //> translate: (number: String)Set[String]
+    encode(number). map(_ mkString " ")
     
-  translate("7225247386")                         //> res4: Set[String] = Set()
+  translate("7225247386")
 /*
 --
 ------------------------
@@ -116,12 +133,11 @@ type Word = String
 
   def wordOccurrences(w: Word): Occurrences =
     w.groupBy(c => c.toLower)
-     .map(m => (m._1, m._2.length)).toList        //> wordOccurrences: (w: week6.allThePieces07.Word)week6.allThePieces07.Occurre
-                                                  //| nces
+     .map(m => (m._1, m._2.length)).toList
 //    w.groupBy(char => w.count(char))
   
     
-//    words.map(word => wordOccurrences(word), word)
+    dictionary.map(word => wordOccurrences(word), word)
   
 /*
 --------------------------
@@ -165,5 +181,4 @@ type Word = String
 /*
 --------------------------
 */
-}
 }

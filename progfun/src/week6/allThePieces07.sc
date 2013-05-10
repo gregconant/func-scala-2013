@@ -1,9 +1,11 @@
-package week6
-
+import java.io.File
 import scala.io.Source
 
-object allThePieces07 {
-  println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
+package week6 {
+	object allThePieces07 {
+	  println("Welcome to the Scala worksheet")
+                                                  //> Welcome to the Scala worksheet
+
 /*
 --------------------------
 Design a program that converts telephone #s to sentences.
@@ -119,6 +121,7 @@ type Word = String
 //    w.groupBy(char => w.count(char))
   
     
+//    words.map(word => wordOccurrences(word), word)
   
 /*
 --------------------------
@@ -162,4 +165,5 @@ type Word = String
 /*
 --------------------------
 */
+}
 }

@@ -42,8 +42,9 @@ object Anagrams {
      .sorted
   
   /** Converts a sentence into its character occurrence list. */
-  def sentenceOccurrences(s: Sentence): Occurrences = ???
-
+  def sentenceOccurrences(s: Sentence): Occurrences =
+    wordOccurrences(s mkString "")
+    
   /** The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
    *  the words that have that occurrence count.
    *  This map serves as an easy way to obtain all the anagrams of a word given its occurrence list.
@@ -59,7 +60,14 @@ object Anagrams {
    *    List(('a', 1), ('e', 1), ('t', 1)) -> Seq("ate", "eat", "tea")
    *
    */
-  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = ???
+  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = {
+    // for every word, generate wordOccurrences, then group them by their occurrence list.
+    dictionary
+    	.map(w => (wordOccurrences(w), w)) // returns List[(Occurrences, Word)]
+    	.groupBy(occToWordPair => (occToWordPair._1)) // returns Map[Occurrences, (List[(Occurrences, Word)]]
+    	.map(occToWordList => occToWordList._1 -> occToWordList._2.map(w => w._2))
+    	// the above line is crazy
+  }
 
   /** Returns all the anagrams of a given word. */
   def wordAnagrams(word: Word): List[Word] = ???
