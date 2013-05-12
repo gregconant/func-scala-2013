@@ -139,7 +139,7 @@ object Anagrams {
     val found = acc.find(pair => pair._1 == curr._1)
     found match {
       case None => curr :: acc
-      case Some(item) => updatedAcc(acc, curr._1, curr._2 - curr._2)
+      case Some(item) => updatedAcc(acc, curr._1, item._2 - curr._2)
     }
   }
   

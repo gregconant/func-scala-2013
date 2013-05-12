@@ -51,6 +51,12 @@ class AnagramsSuite extends FunSuite {
     assert(subtract(lard, r) === lad)
   }
 
+  test("subtract: jimmy - my") {
+    val jimmy = List(('j', 1), ('i', 1), ('m', 2), ('y', 1))
+    val my = List(('m', 1), ('y', 1))
+    val jim = List(('j', 1), ('i', 1), ('m', 1))
+    assert(subtract(jimmy, my) === jim)
+  }
 
 
   test("combinations: []") {
@@ -126,6 +132,7 @@ class AnagramsSuite extends FunSuite {
     println("in test: actual = " + actual)
     assert(actual === anas.toSet)
   }
+
   
 
 }
