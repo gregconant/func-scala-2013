@@ -144,7 +144,6 @@ object Anagrams {
   }
   
   def updatedAcc(acc: List[(Char, Int)], charToUpdate: Char, newCount: Int): List[(Char, Int)] = {
-    println("in updatedAcc")
     acc.map(pair => if(pair._1 == charToUpdate) (charToUpdate, newCount) else pair)
   }
   
@@ -192,10 +191,9 @@ object Anagrams {
   def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
 	// get occurrence list for sentence
     val occForSentence = sentenceOccurrences(sentence)
-    println("occForSentence: " + occForSentence)
     
     def sentenceAnagramsAcc(occurrences: Occurrences) : List[Sentence] = {
-	  occForSentence match {
+	  occurrences match {
 	    // empty list of occurrences
 		case List() => List(List())
 		// non-empty list of occurrences
@@ -207,14 +205,14 @@ object Anagrams {
 		    case Some(combination) => combination
 		  }
 		  // for each word, remove its occurrences from the list and add to main list
-		  restOfTheList <- sentenceAnagramsAcc(subtract(occs,wordOccurrences(word)))
+		  sentence <- sentenceAnagramsAcc(subtract(occs,wordOccurrences(word)))
 		  if !combination.isEmpty
-		} yield word :: restOfTheList
+		} yield word :: sentence 
 	  }
     }
 /*
 */
     sentenceAnagramsAcc(occForSentence)
-} 
+  } 
 
 }
