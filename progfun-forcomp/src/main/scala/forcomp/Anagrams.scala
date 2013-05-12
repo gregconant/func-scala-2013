@@ -144,7 +144,11 @@ object Anagrams {
   }
   
   def updatedAcc(acc: List[(Char, Int)], charToUpdate: Char, newCount: Int): List[(Char, Int)] = {
+<<<<<<< HEAD
     //println("in updatedAcc")
+=======
+    println("in updatedAcc")
+>>>>>>> af2e5659b40e226af11ab2c0dcd0ed7e19dc8d7d
     acc.map(pair => if(pair._1 == charToUpdate) (charToUpdate, newCount) else pair)
   }
   
