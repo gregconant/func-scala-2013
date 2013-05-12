@@ -70,7 +70,13 @@ object Anagrams {
   }
 
   /** Returns all the anagrams of a given word. */
-  def wordAnagrams(word: Word): List[Word] = ???
+  def wordAnagrams(word: Word): List[Word] = {
+    // get word list out of dictionary
+    // because we can get the occurrences for this word
+    // and then get all related words to that list
+    dictionaryByOccurrences(wordOccurrences(word))
+    
+  }
 
   /** Returns the list of all subsets of the occurrence list.
    *  This includes the occurrence itself, i.e. `List(('k', 1), ('o', 1))`
@@ -94,7 +100,20 @@ object Anagrams {
    *  Note that the order of the occurrence list subsets does not matter -- the subsets
    *  in the example above could have been displayed in some other order.
    */
-  def combinations(occurrences: Occurrences): List[Occurrences] = ???
+
+  def combinations(occurrences: Occurrences): List[Occurrences] =  {
+    occurrences match {
+      case List() => List(List())
+      case occ :: tail => {
+    	//println("occ: " + occ)
+    	//println("tail: " + tail)
+    	for {
+    	  occsOfHead <- (0 to occ._2).map((occ._1, _)).toList
+    	  occsFromTail <- combinations(tail)
+    	} yield (occsOfHead :: occsFromTail).filter(pair => pair._2 != 0).toList
+      }
+    }
+  }
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
    * 
@@ -106,7 +125,29 @@ object Anagrams {
    *  Note: the resulting value is an occurrence - meaning it is sorted
    *  and has no zero-entries.
    */
-  def subtract(x: Occurrences, y: Occurrences): Occurrences = ???
+  def subtract(x: Occurrences, y: Occurrences): Occurrences = {
+    (x++y)
+    .foldLeft(List[(Char, Int)]())(subtractOccs)
+    .filter(occ => occ._2 != 0)
+    .toList
+    .reverse
+    
+    /*
+*/
+  }
+  def subtractOccs(acc: List[(Char, Int)], curr: (Char, Int)): Occurrences = {
+    val found = acc.find(pair => pair._1 == curr._1)
+    found match {
+      case None => curr :: acc
+      case Some(item) => updatedAcc(acc, curr._1, curr._2 - curr._2)
+    }
+  }
+  
+  def updatedAcc(acc: List[(Char, Int)], charToUpdate: Char, newCount: Int): List[(Char, Int)] = {
+    //println("in updatedAcc")
+    acc.map(pair => if(pair._1 == charToUpdate) (charToUpdate, newCount) else pair)
+  }
+  
 
   /** Returns a list of all anagram sentences of the given sentence.
    *  
@@ -148,6 +189,32 @@ object Anagrams {
    *
    *  Note: There is only one anagram of an empty sentence.
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+	// get occurrence list for sentence
+    val occForSentence = sentenceOccurrences(sentence)
+    println("occForSentence: " + occForSentence)
+    
+    def sentenceAnagramsAcc(occurrences: Occurrences) : List[Sentence] = {
+	  occForSentence match {
+	    // empty list of occurrences
+		case List() => List(List())
+		// non-empty list of occurrences
+		case occs => for {
+		  combination <- combinations(occs)
+		  // get words for these combinations
+		  word <- dictionaryByOccurrences.get(combination) match {
+		    case None => Nil
+		    case Some(combination) => combination
+		  }
+		  // for each word, remove its occurrences from the list and add to main list
+		  restOfTheList <- sentenceAnagramsAcc(subtract(occs,wordOccurrences(word)))
+		  if !combination.isEmpty
+		} yield word :: restOfTheList
+	  }
+    }
+/*
+*/
+    sentenceAnagramsAcc(occForSentence)
+} 
 
 }
