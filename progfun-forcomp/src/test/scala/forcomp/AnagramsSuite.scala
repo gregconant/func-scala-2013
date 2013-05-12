@@ -25,6 +25,9 @@ class AnagramsSuite extends FunSuite {
   }
 
 
+  test("dictionaryByOccurrences.get: abba") {
+    assert(dictionaryByOccurrences.get(List(('a', 2), ('b', 2))).map(_.toSet) === Some(Set("Abba")))
+  }
 
   test("dictionaryByOccurrences.get: eat") {
     assert(dictionaryByOccurrences.get(List(('a', 1), ('e', 1), ('t', 1))).map(_.toSet) === Some(Set("ate", "eat", "tea")))
@@ -39,7 +42,6 @@ class AnagramsSuite extends FunSuite {
   test("word anagrams: player") {
     assert(wordAnagrams("player").toSet === Set("parley", "pearly", "player", "replay"))
   }
-
 
 
   test("subtract: lard - r") {
