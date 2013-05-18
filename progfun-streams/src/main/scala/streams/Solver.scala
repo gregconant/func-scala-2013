@@ -102,7 +102,7 @@ trait Solver extends GameDef {
   lazy val pathsFromStart: Stream[(Block, List[Move])] = {
     val initial = List[(Block, List[Move])]((startBlock, List[Move]())).toStream
     val allPaths = from(initial, Set())
-    println("allPaths: " + allPaths)
+    //println("allPaths: " + allPaths)
     allPaths
   }
 
@@ -127,7 +127,7 @@ trait Solver extends GameDef {
     if(resultPaths.isEmpty) Nil
     else {
 	  val sortedPaths = pathsToGoal.map(p => p._2).sortBy(_.length)
-	  sortedPaths(0)
+	  sortedPaths(0).reverse
     }
   }
 }
