@@ -109,6 +109,17 @@ class BloxorzSuite extends FunSuite {
     }
   }
 
+  test("from -- simple case") {
+    new Level1 {
+      val initial = Set((Block(Pos(1,2),Pos(1,3)), List(Right,Left,Up))).toStream
+
+	  val explored = Set[Block]()
+      val r = from(initial, explored).toList
+      //println("result: " + r)
+      val pFromS = pathsFromStart.toList
+    }
+  }
+  
   test("optimal solution for level 1") {
     new Level1 {
       assert(solve(solution) == Block(goal, goal))
