@@ -90,6 +90,10 @@ trait Solver extends GameDef {
     	  // for each block in 'initial', get and explore its neighbors
     	  neighbs <- newNeighborsOnly(neighborsWithHistory(block._1, block._2), explored)
       } yield neighbs
+      // now have list of all neighbors for this block.
+      // create new path with initial stream
+      // added to paths from each neighbor.
+
       //println("paths: " + paths)
 	  initial #::: from(paths, explored ++ initial.map(_._1))
     }
@@ -102,7 +106,7 @@ trait Solver extends GameDef {
   lazy val pathsFromStart: Stream[(Block, List[Move])] = {
     val initial = List[(Block, List[Move])]((startBlock, List[Move]())).toStream
     val allPaths = from(initial, Set())
-    println("allPaths: " + allPaths)
+    //println("allPaths: " + allPaths)
     allPaths
   }
 
@@ -127,7 +131,7 @@ trait Solver extends GameDef {
     if(resultPaths.isEmpty) Nil
     else {
 	  val sortedPaths = pathsToGoal.map(p => p._2).sortBy(_.length)
-	  sortedPaths(0)
+	  sortedPaths(0).reverse
     }
   }
 }

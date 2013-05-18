@@ -126,6 +126,14 @@ class BloxorzSuite extends FunSuite {
     }
   }
 
+  test("optimal solution moves for level 1") {
+    new Level1 {
+      println("should be: " + optsolution)
+      println("       is: " + solution)
+      assert(solution == optsolution)
+    }
+  }
+
   test("optimal solution length for level 1") {
     new Level1 {
       assert(solution.length == optsolution.length)
