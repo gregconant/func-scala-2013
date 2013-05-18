@@ -26,6 +26,18 @@ class BloxorzSuite extends FunSuite {
     }
   }
 
+  trait miscFunctions extends SolutionChecker {
+    val level =
+    """ooo-------
+      |oSoooo----
+      |ooooooooo-
+      |-ooooooooo
+      |-----ooToo
+      |------ooo-""".stripMargin
+
+      def aTest = (false && {println("something"); true})
+  }
+  
   trait Level1 extends SolutionChecker {
       /* terrain for level 1*/
 
@@ -40,11 +52,16 @@ class BloxorzSuite extends FunSuite {
     val optsolution = List(Right, Right, Down, Right, Right, Right, Down)
   }
 
-  test("findChar finds char correctly"){
-    val parser = new StringParserTerrain
-    assert()
+  test("simple terrainFunction test") {
+    new miscFunctions {
+	  val levelVector = Vector(Vector('S','T'), Vector('o','o'), Vector('o','o')) 
+	  val func = terrainFunction(levelVector)
+	  val validPos = func(Pos(2,1))
+	  assert(validPos, true)
+	  val invalidPos = func(Pos(2,8))
+	  assert(invalidPos == false)
+    }
   }
-  
   
   test("terrain function level 1") {
     new Level1 {

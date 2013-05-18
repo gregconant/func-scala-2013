@@ -52,12 +52,19 @@ trait StringParserTerrain extends GameDef {
    * a valid position (not a '-' character) inside the terrain described
    * by `levelVector`.
    */
-  def terrainFunction(levelVector: Vector[Vector[Char]]): Pos => Boolean = (p: Pos) => 
+  def terrainFunction(levelVector: Vector[Vector[Char]]): Pos => Boolean = (p: Pos) => {
+/*
+    println("p.x >= 0 ? " + (p.x >= 0)) 
+    println("p.y >= 0 ? " + (p.y >= 0))
+    println("p.x < levelVector.size ? " +  (p.x < levelVector.size))
+    println("p.y < levelVector(0).size ? " + (p.y < levelVector(0).size))
+ */    
     (p.x >= 0 && 
      p.y >= 0 && 
-     p.x < levelVector.length && 
-     p.y < levelVector(p.x).length && 
+     p.x < levelVector.size && 
+     p.y < levelVector(0).size && 
      levelVector(p.x)(p.y) != '-' )
+  }
   
 
   /**
@@ -72,7 +79,7 @@ trait StringParserTerrain extends GameDef {
     val indexOfX = levelVector.indexWhere(p => p.contains(c))
     val vectorContainingY = levelVector(indexOfX)
     val indexOfY = vectorContainingY.indexWhere(p => p == c)
-    Pos(indexOfX, vectorContainingY(indexOfY))
+    Pos(indexOfX, indexOfY)
   }
 
   private lazy val vector: Vector[Vector[Char]] =
